@@ -12,38 +12,51 @@ public class ArrayUtility<T> {
         this.array = inputArray;
     }
 
-
-
-
-
-    public Integer countDuplicatesInMerge(T[] arrayToMerge, T valueToEvaluate) {
+    public T[] mergeArray(T[] arrayToMerge) {
         //Make a new array to merge two arrays into
-        T[] newArray = (T[]) Array.newInstance(arrayToMerge.getClass(), array.length + arrayToMerge.length);
-        int lengthOfBaseArray = array.length;
+        T[] newArray = (T[]) Array.newInstance(arrayToMerge[0].getClass(), array.length + arrayToMerge.length);
+        int mergeCounter = 0;
 
         //Merge!!!!
         for (int i = 0; i < array.length; i++) {
             newArray[i] = array[i];
         }
-        for (int i = array.length; i < arrayToMerge.length + lengthOfBaseArray; i++) {
-            newArray[i] = arrayToMerge[i];
+        for (int i = array.length; i < arrayToMerge.length + array.length; i++) {
+            newArray[i] = arrayToMerge[mergeCounter];
+            mergeCounter++;
         }
-        //Count ValueToEvaluate!!!!
 
-        int duplicate = getNumberOfOccurrences((T) newArray);
-
-        return duplicate > 0 ? duplicate -1 : duplicate;
-
+        return newArray;
     }
 
 
 
+    public Integer countDuplicatesInMerge(T[] arrayToMerge, T valueToEvaluate) {
 
+        //This method moved to its own apartment
 
+//        //Make a new array to merge two arrays into
+//        T[] newArray = (T[]) Array.newInstance(valueToEvaluate.getClass(), array.length + arrayToMerge.length);
+//        int mergeCounter = 0;
+//
+//        //Merge!!!!
+//        for (int i = 0; i < array.length; i++) {
+//            newArray[i] = array[i];
+//        }
+//        for (int i = array.length; i < arrayToMerge.length + array.length; i++) {
+//            newArray[i] = arrayToMerge[mergeCounter];
+//            mergeCounter++;
+//        }
+//
+       T[] newArray = mergeArray(arrayToMerge);
 
+        //Count ValueToEvaluate!!!!
+        this.array = newArray;
+        int duplicate = getNumberOfOccurrences(valueToEvaluate);
 
+        return duplicate;
 
-
+    }
 
 
     public T[] removeValue(T valueToRemove) {
@@ -65,8 +78,6 @@ public class ArrayUtility<T> {
     }
 
 
-
-
     public Integer getNumberOfOccurrences(T valueToEvaluate) {
         int counter = 0;                                //Keep track of how many
 
@@ -81,14 +92,20 @@ public class ArrayUtility<T> {
 
 
 
-
-
-
-
-
-
     public T getMostCommonFromMerge(T[] arrayToMerge) {
-        return null;
+        T[] newArray = mergeArray(arrayToMerge);
+        int mostCommonCounter = 0;
+        T mostCommonElement = null;
+
+        for (int i = 0; i < newArray.length; i++) {
+            int currentCounter = getNumberOfOccurrences(newArray[i]);
+            if (currentCounter > mostCommonCounter) {
+                mostCommonCounter = currentCounter;
+                mostCommonElement = newArray[i];
+            }
+        }
+
+        return mostCommonElement;
     }
 
 
